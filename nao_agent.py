@@ -2,6 +2,7 @@ from qibullet import SimulationManager
 import pyttsx3
 import string
 import time
+import cv2
 
 class Nao(SimulationManager):
     def __init__(self, gui: bool = True, auto_step: bool = True):
@@ -9,8 +10,46 @@ class Nao(SimulationManager):
         self.client_id = self.launchSimulation(gui=gui, auto_step=auto_step)
         self.robot = self.spawnNao(self.client_id, spawn_ground_plane=True)
         self.voice_engine = pyttsx3.init()
+    
+    #####################################################################################
+    ##################################     ACTIONS     ##################################
+    #####################################################################################
+    
+    # capture image
+    def capture_image(self, camera: str = 'top'):
+        if camera == 'top':
+            handle = self.robot.subscribeCamera(self.robot.ID_CAMERA_TOP, fps=15.0)
+            img = self.robot.getCameraFrame(handle)
+            self.robot.unsubscribeCamera(handle)
+            return img
+        elif camera == 'bottom':
+            handle = self.robot.subscribeCamera(self.robot.ID_CAMERA_BOTTOM, fps=15.0)
+            img = self.robot.getCameraFrame(handle)
+            self.robot.unsubscribeCamera(handle)
+            return img
+        
+    # stream video
+    def stream_video(self, camera: str = 'top'):
+        if camera == 'top':
+            handle = self.robot.subscribeCamera(self.robot.ID_CAMERA_TOP, fps=15.0)
+            while True:
+                img = self.robot.getCameraFrame(handle)
+                cv2.imshow("top camera", img)
+                if cv2.waitKey(1) & 0xFF == ord(' '):
+                    break
+            self.robot.unsubscribeCamera(handle)
+            cv2.destroyAllWindows()
+        elif camera == 'bottom':
+            handle = self.robot.subscribeCamera(self.robot.ID_CAMERA_BOTTOM, fps=15.0)
+            while True:
+                img = self.robot.getCameraFrame(handle)
+                cv2.imshow("bottom camera", img)
+                if cv2.waitKey(1) & 0xFF == ord(' '):
+                    break
+            self.robot.unsubscribeCamera(handle)
+            cv2.destroyAllWindows()
 
-    # actions
+    # speak
     def speak(self, speech: str):
         speech = speech.translate(str.maketrans('', '', string.punctuation)) # remove punctuation
         self.voice_engine.say(speech)

@@ -6,10 +6,25 @@ A PyBullet based simulator for NAO and Pepper robot.
 
 - I've used a virtual conda environment with Python 3.9 since the latest version of qiBullet supports upto Python 3.9. 
 
-## Installation
+## Installation (Ubuntu)
 
-Install the latest version of qiBullet (qibullet==1.4.6) in the conda environment.
-Follow the README section of the qiBullet repository: https://github.com/softbankrobotics-research/qibullet
+* In your terminal, activate your conda environment with Python 3.9.
+```bash
+conda activate base
+conda activate <your_python_env>
+``` 
+> The latest supported Python version for qiBullet is 3.9. Newer versions of Python3 will throw error in the code. 
+* Clone this repo in your device, and go to the cloned directory.
+```bash
+cd ~/
+git clone https://github.com/shawbicc/qibullet_sim.git
+cd ./qibullet_sim
+```
+* Install the dependencies from the `requirements.txt` file using `pip`.
+```bash
+python3 -m pip install -r ./requirements.txt
+```
+> For installing the qiBullet library alone, follow the README section of the qiBullet repository: https://github.com/softbankrobotics-research/qibullet
 
 ## Driver issue (For conda-based virtual environment users)
 
@@ -43,6 +58,8 @@ https://stackoverflow.com/questions/72110384/libgl-error-mesa-loader-failed-to-o
     * `walk(x=x,y=y)`: Walk to a specified coordinate. *(UNDER DEVELOPMENT)*
     * `handshake(left/right)`: Do a handshake motion with a preferred hand. Default is `right`.
     * `reset_nao_pose()`: Reset the Nao robot to the standing pose.
+    * `capture_image(top/bottom)`: Returns an image captured from the `top` or `bottom` camera of the Nao robot. Default is `top`.
+    * `stream_video(top/bottom/both)`: Start a realtime video stream from a specified or both cameras using `opencv`. Default is `top`. Hit Space to terminate the stream.
 
 - `main.py`: The main file for the simulation. You can try out different features/actions of the robot in it. Here's an example snippet to get started:
 
@@ -58,8 +75,8 @@ https://stackoverflow.com/questions/72110384/libgl-error-mesa-loader-failed-to-o
     ```
     > **Note:** Make sure the qiBullet installation is done successfully before trying out the `main.py` or any of your own code. Keep the `nao_agent.py` file in the same directory as the code you're trying to run, so that the Nao class can be accessed.
 
-## Example code
+## Useful References
 
-Example code files are available here: https://github.com/softbankrobotics-research/qibullet/tree/master/examples
-
-Posture control examples: https://github.com/softbankrobotics-research/qibullet/wiki/Tutorials:-Virtual-Robot
+* Example code files are available here: https://github.com/softbankrobotics-research/qibullet/tree/master/examples
+* Posture control examples: https://github.com/softbankrobotics-research/qibullet/wiki/Tutorials:-Virtual-Robot
+* qiBullet Nao robot class and available methods: https://github.com/softbankrobotics-research/qibullet/blob/master/qibullet/nao_virtual.py
